@@ -1,0 +1,51 @@
+<div *blockUI="'blockui-popup'">
+  <div class="modal-header">
+    <h4 class="modal-title">Xác thực rút tiền</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="theme-form">
+      <div class="form-group row">
+        <label class="col-sm-12">Xác thực rút tiền của khách hàng: <strong>{{title}}</strong></label>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Số tiền khách muốn rút</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="amountFormat" name="amountFormat" disabled class="form-control" />
+        </div>
+        <label class="col-sm-2 col-form-label">Số tài khoản nhận tiền</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="dataModel.bankNumber" name="bankNumber" disabled class="form-control" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tên tài khoản nhận tiền</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="dataModel.bankAccountName" name="bankAccountName" disabled
+            class="form-control" />
+        </div>
+        <label class="col-sm-2 col-form-label">Tên ngân hàng</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="dataModel.bankName" name="bankName" disabled class="form-control" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tỉnh thành phố</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="dataModel.bankProvince" name="bankProvince" disabled class="form-control" />
+        </div>
+        <label class="col-sm-2 col-form-label">Chi nhánh</label>
+        <div class="col-sm-4">
+          <input type="text" [(ngModel)]="dataModel.bankBranch" name="bankBranch" disabled class="form-control" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary mr-1" (click)="onSubmit()">Xác nhận</button>
+    <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Đóng</button>
+  </div>
+</div>

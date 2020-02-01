@@ -1,0 +1,50 @@
+<div class="modal-header">
+  <h4 class="modal-title">Tạo lệnh hoàn tiền</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="theme-form" name="form">
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Mã FT</label>
+      <div class="col-sm-9">
+        REFUND-{{payment.Id}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Số tiền</label>
+      <div class="col-sm-9">
+        {{formatFrice(payment.Amount)}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Khách hàng</label>
+      <div class="col-sm-9">
+        {{payment.FullName}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Ví</label>
+      <div class="col-sm-9">
+          {{payment.WalletId}}
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Mô tả</label>
+      <div class="col-sm-9">
+        <textarea rows="3" name="description" class="form-control" [(ngModel)]="description" [disabled]="paymentRefundExisting"></textarea>
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="paymentRefundExisting">
+        <label class="col-sm-3 col-form-label"></label>
+        <div class="col-sm-9">
+            Giao dịch thanh toán đã tạo lệnh hoàn tiền
+        </div>
+      </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary mr-1" (click)="onSubmit()" *ngIf="!paymentRefundExisting">Xác nhận tạo lệnh hoàn tiền</button>
+  <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+</div>

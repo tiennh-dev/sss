@@ -1,0 +1,78 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>Giao dịch thanh toán</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="search-box">
+            <div class="row mb-2">
+              <div class="col-lg-3">
+                <ng-select [items]="customerList" [virtualScroll]="true" (change)="rerender(true)" bindLabel="fName"
+                  (search)="searchAutoCompeleteCustomer($event)" bindValue="accountId" [(ngModel)]="accountId"
+                  placeholder="Lọc theo khách hàng...">
+                </ng-select>
+              </div>
+
+              <div class="col-lg-2">
+                <ng-select [items]="lstpaymentForm" bindLabel="name" bindValue="value"
+                  placeholder="Hình thức thanh toán" (change)="rerender(true)" [(ngModel)]="paymentForm">
+                </ng-select>
+              </div>
+              <div class="col-lg-2">
+                <ng-select [items]="lstpaymentType" bindLabel="name" bindValue="value" placeholder="Loại thanh toán"
+                  (change)="rerender(true)" [(ngModel)]="paymentType">
+                </ng-select>
+              </div>
+              <div class="col-lg-3">
+                <div class="input-group">
+                  <input class="form-control" [(ngModel)]="startTime" ngbDatepicker #c="ngbDatepicker"
+                    (ngModelChange)="rerender(true)" placeholder="Ngày tạo từ" />
+                  <div class="input-group-append">
+                    <button class="btn calendar" (click)="c.toggle()" type="button"><i
+                        class="fa fa-calendar"></i></button>
+                  </div>
+                  <input class="form-control" [(ngModel)]="endTime" ngbDatepicker #d="ngbDatepicker"
+                    (ngModelChange)="rerender(true)" placeholder="đến" />
+                  <div class="input-group-append">
+                    <button class="btn calendar" (click)="d.toggle()" type="button"><i
+                        class="fa fa-calendar"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-2">
+                <input type="text" class="form-control" (keydown.enter)="rerender(true)" (change)="rerender(true)"
+                  [(ngModel)]="description" placeholder="Lọc theo mô tả..." />
+              </div>
+            </div>
+            <div class="row mb-1">
+              <div class="col-lg-5">
+                <ng-select [items]="stateList" [multiple]="true" (change)="rerender(true)" bindLabel="display"
+                  bindValue="state" [(ngModel)]="search_state" placeholder="Trạng thái xử lý">
+                </ng-select>
+              </div>
+              <div class="col-lg-2">
+                <input type="text" class="form-control" (keydown.enter)="rerender(true)" (change)="rerender(true)"
+                  [(ngModel)]="refCode" placeholder="Mã đơn hàng..." />
+              </div>
+              <div class="col-lg-3">
+                <ng-select [items]="statusList" (change)="rerender(true)" bindLabel="name"
+                  bindValue="value" [(ngModel)]="search_status" placeholder="Trạng thái">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table  table-hover"> </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

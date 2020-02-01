@@ -1,0 +1,183 @@
+<div class="modal-header">
+  <h4 class="modal-title">Thông tin đơn hàng</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="card">
+    <div class="card-body table-responsive" *ngIf="order">
+      <table class="table table-bordered table-striped">
+        <tr>
+          <td class="w130">Mã đơn hàng</td>
+          <td class="w300">{{order.code}}</td>
+          <td class="w130">Ngày đặt</td>
+          <td>{{order.orderDateDisplay}}</td>
+        </tr>
+        <tr>
+          <td>Mô tả</td>
+          <td colspan="3">{{order.title}}</td>
+        </tr>
+        <tr>
+          <td>Khách hàng</td>
+          <td colspan="3">{{order.fullName}} [{{order.accountName}}]</td>
+        </tr>
+        <tr>
+          <td>Mã Tracking</td>
+          <td>
+            <div *ngIf="!isEditing">
+              {{order.tracking != null ? order.tracking : 'chưa cập nhật' }}
+            </div>
+            <div *ngIf="isEditing">
+              <input class="form-control" [(ngModel)]="order.tracking" #tracking class="w100" />
+            </div>
+          </td>
+          <td>Kho</td>
+          <td>
+            <div>
+              {{ order.warehouseDisplay }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Giá SP + VAT</td>
+          <td class="orange">{{priceDisplay(order.total) }} ¥ ~ {{priceDisplay(order.total*order.exchangeRate) }} đ
+          </td>
+          <td>Phí v/c tại Nhật</td>
+          <td>
+            <div class="orange">
+              {{order.shippingFee != null ? (priceDisplay(order.shippingFee) + ' ¥'):'Chưa cập nhật' }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Phụ phí</td>
+          <td>
+            <div class="orange">
+              {{order.surcharge != null ? (priceDisplay(order.surcharge) + ' ¥') : '' }}
+            </div>
+          </td>
+          <td>Ghi Chú phụ phí</td>
+          <td>
+            <div>
+              {{ order.surchargeNote }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Công mua</td>
+          <td class="orange">
+            {{priceDisplay(order.buyFee) }} % ~ {{buyfreejp(order)}} ¥ ~
+            {{priceDisplay(buyfreejp(order) * order.exchangeRate)}} đ
+          </td>
+          <td>Tỷ giá</td>
+          <td class="orange">
+            {{ priceDisplay(order.exchangeRate) }} đ
+          </td>
+        </tr>
+        <tr>
+          <td>Trọng lượng</td>
+          <td>
+            <div>
+              {{order.weight}} (gam)
+            </div>
+          </td>
+          <td>Kích thước</td>
+          <td>
+            <div>
+              {{order.width}} - {{order.hight}} - {{order.length}} (cm)
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>V/C Nhật-Việt</td>
+          <td class="orange">{{priceDisplay(order.shippingUnitGlobal)}} đ/kg ~ {{priceDisplay(shipGlobal(order))}} đ
+          </td>
+          <td>Phí giao hàng</td>
+          <td>
+            <div class="orange">
+              {{order.deliveryPartner!=null?order.deliveryPartner:'' }} -
+              {{order.deliveryFee!=null?(priceDisplay(order.deliveryFee) + 'đ'):'Chưa cập nhật' }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Tổng tiền</td>
+          <td class="orange">{{totalPriceVN(order)}} đ</td>
+          <td>TT đơn hàng</td>
+          <td>
+            <span class="badge badge-light">{{ statusDisplay(order.status) }}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="card-body table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="mw90">Tên SP</th>
+            <th class="mw90">Mã SP</th>
+            <th class="mw130">Kết thúc</th>
+            <th class="mw100">Giá</th>
+            <th class="mw70">Thuế</th>
+            <th class="mw90">Số lượng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of orderDetails">
+            <td style="width: 45px;"><a target="_blank"
+                href="https://page.auctions.yahoo.co.jp/jp/auction/{{item.ref}}"><img class="img-list img-fluid"
+                  src="{{item.previewImage}}"></a>
+            </td>
+            <td> <a href="https://page.auctions.yahoo.co.jp/jp/auction/{{item.ref}}"
+                target="_blank">{{item.productName}}</a></td>
+            <td>{{item.ref}}</td>
+            <td class="">{{item.orderDateStr}}</td>
+            <td class="">{{item.price}} ¥</td>
+            <td class="">{{item.tax}} %</td>
+            <td class="">{{item.amount}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <div class="card-body">
+      <div class="mb-2">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Thông tin thanh toán</h5>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Tên ví</th>
+            <th>Số tiền</th>
+            <th>Loại TT</th>
+            <th>Hình thức TT</th>
+            <th>Trạng thái</th>
+            <th>Mô tả</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let itempay of payments">
+                <td>{{itempay.walletId}}</td>
+                <td>{{itempay.amountstring}} đ</td>
+                <td>{{paymentTypeDisp(itempay.paymentType)}}</td>
+                <td>{{paymentFormDisp(itempay.paymentForm)}}</td>
+                <td>
+                  <span
+                    [ngClass]="{'badge badge-success': itempay.selected===true , 'badge badge-warning': itempay.selected === false}">{{itempay.status}}</span>
+                </td>
+                <td>{{itempay.description}}</td>
+              </tr>
+              <tr *ngIf="collectionIsEmpty(payments)">
+                <td colspan="5" class="text-align-center">Không tồn tại bản ghi nào.</td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>

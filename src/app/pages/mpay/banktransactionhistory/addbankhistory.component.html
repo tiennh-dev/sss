@@ -1,0 +1,83 @@
+<div *blockUI="'blockui'">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Lịch sử BANKKING</h5>
+        <button type="button" class="close" (click)="activeModal.dismiss('x')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="theme-form" name="myform" [formGroup]="myform">
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Mã số (*)</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="id" class="form-control" placeholder="nhập mã số"
+                        [ngClass]="{ 'is-invalid': submitted && f.id.errors }" required />
+                    <div *ngIf="submitted && f.id.errors" class="invalid-feedback">
+                        <div *ngIf="f.id.errors.required">Mã số không được để trống</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Số tài khoản/Tên ngân hàng (*)</label>
+                <div class="col-sm-8">
+                    <ng-select [items]="bankInfoList" [virtualScroll]="true" bindLabel="Name" bindValue="accountNumber"
+                        class="custom-select2" (change)="choonseAccountNumber($event)"
+                        placeholder="chọn số tài khoản và tên ngân hàng" formControlName="accountNumber"
+                        [ngClass]="{ 'is-invalid': submitted && f.accountNumber.errors }" required>
+                    </ng-select>
+                    <div *ngIf="submitted && f.accountNumber.errors" class="invalid-feedback">
+                        <div *ngIf="f.accountNumber.errors.required">Số tài khoản và tên ngân hàng không được để trống
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Ghi có (*)</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="debitAmount" class="form-control" placeholder="ghi có"
+                        [ngClass]="{ 'is-invalid': submitted && f.debitAmount.errors }" required />
+                    <div *ngIf="submitted && f.debitAmount.errors" class="invalid-feedback">
+                        <div *ngIf="f.debitAmount.errors.required">Ghi có không được để trống</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Ghi nợ (*)</label>
+                <div class="col-sm-8">
+                    <input type="text" formControlName="creditAmount" class="form-control" placeholder="ghi nợ"
+                        [ngClass]="{ 'is-invalid': submitted && f.creditAmount.errors }" required />
+                    <div *ngIf="submitted && f.creditAmount.errors" class="invalid-feedback">
+                        <div *ngIf="f.creditAmount.errors.required">Ghi nợ không được để trống</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Thời gian giao dịch (*)</label>
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <input placeholder="Ngày nạp" class="form-control" formControlName="transactionDate"
+                            ngbDatepicker #c="ngbDatepicker"
+                            [ngClass]="{ 'is-invalid': submitted && f.transactionDate.errors }" required />
+                        <div class="input-group-append">
+                            <button class="btn calendar" (click)="c.toggle()" type="button"><i
+                                    class="fa fa-calendar"></i></button>
+                        </div>
+                        <div *ngIf="submitted && f.transactionDate.errors" class="invalid-feedback">
+                            <div *ngIf="f.transactionDate.errors.required">Ngày nạp không được để trống</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Mô tả (*)</label>
+                <textarea class="form-control" id="message-text" [(ngModel)]="dataModel.description"
+                    formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }"
+                    required></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onAddNew()">Lưu</button>
+                <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('x')">Thoát</button>
+            </div>
+        </form>
+    </div>
+</div>

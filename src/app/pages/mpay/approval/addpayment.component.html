@@ -1,0 +1,59 @@
+<div *blockUI="'blockui'">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Thêm thông tin thanh toán</h5>
+        <button type="button" class="close" (click)="activeModal.dismiss('x')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form class="theme-form" name="myform" [formGroup]="myform">
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Chọn ví<span>*</span></label>
+                <div class="col-sm-6">
+                    <ng-select [items]="wallets" formControlName="walletId" [virtualScroll]="true"
+                        [(ngModel)]="dataModel.walletId" bindLabel="id" bindValue="id" 
+                        [ngClass]="{ 'is-invalid': submitted && f.walletId.errors }" required class="custom-select2">
+                    </ng-select>
+                    <div *ngIf="submitted && f.walletId.errors?.required" class="invalid-feedback">
+                        Bạn chưa chọn ví
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Loại thanh toán<span>*</span></label>
+                <div class="col-sm-6">
+                    <ng-select [items]="paymentType" formControlName="payType" [virtualScroll]="true"
+                        (click)="choosePayType()" [(ngModel)]="dataModel.payType" bindLabel="name" bindValue="id"
+                        [ngClass]="{ 'is-invalid': submitted && f.payType.errors }" required class="custom-select2">
+                    </ng-select>
+                    <div *ngIf="submitted && f.payType.errors" class="invalid-feedback">
+                        <div *ngIf="f.payType.errors.required"> Bạn chưa chọn kiểu thanh toán</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-6 col-form-label">Số tiền<span>*</span></label>
+                <div class="col-sm-6">
+                    <input type="text" [(ngModel)]="dataModel.amount" formControlName="amount" class="form-control" inputmode="numeric" usd-only
+                        [disabled]="isAmountInputDisabled()" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }"
+                        required />
+                    <div *ngIf="submitted && f.amount.errors?.required" class="invalid-feedback">
+                        Số tiền không được để trống
+                    </div>
+                    <div *ngIf="f.amount.errors?.min" class="invalid-feedback">
+                        số tiền không được âm
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Mô tả</label>
+                <textarea class="form-control" id="message-text" [(ngModel)]="dataModel.description"
+                    formControlName="description"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="onAddNew()">Lưu</button>
+                <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('x')">Thoát</button>
+            </div>
+        </form>
+    </div>
+</div>

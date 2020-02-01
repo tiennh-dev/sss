@@ -1,0 +1,26 @@
+<div *blockUI="'blockui-popup'">
+    <div class="modal-header">
+      <h4 class="modal-title">Xác thực nạp tiền</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="theme-form">
+        <div class="form-group row">
+          <label class="col-sm-12">Xác thực nạp tiền của khách hàng: <strong>{{title}}</strong></label>
+        </div>
+  
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Số tiền nạp</label>
+          <div class="col-sm-9">
+            <input type="text" [(ngModel)]="amountFormat" name="amountFormat" disabled class="form-control" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary mr-1" (click)="onSubmit()">Xác nhận</button>
+      <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Đóng</button>
+    </div>
+  </div>

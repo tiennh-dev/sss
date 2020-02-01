@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <h4 class="modal-title">Capcha</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *blockUI="'blockui-popup'">
+    <form class="theme-form" [formGroup]="form" name="form">
+      <div class="form-group row">
+          <div class="col-sm-12">
+              <img src="{{dataModel}}">
+            </div>
+      </div>
+      <div class="form-group">
+          <div class="input-group">
+              <input type="text" class="form-control" [(ngModel)]="login.capcha" formControlName="capcha"/>
+              <div class="input-group-append">
+                <button class="btn btn-secondary" (click)="refreshCapcha()"><i class="fa fa-refresh"
+                    aria-hidden="true"></i></button>
+              </div>
+            </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary mr-1" (click)="onSubmit()">Login</button>
+    <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+  </div>

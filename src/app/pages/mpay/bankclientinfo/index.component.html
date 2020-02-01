@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <h5>Bank Client Info</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive1">
+                <table class="table table-border table-hover mb-2">
+                  <thead>
+                    <tr>
+                      <th scope="col">Id</th>
+                      <th scope="col">UserName</th>
+                      <th scope="col">IsReady</th>
+                      <th scope="col">UpdatedDate</th>
+                      <th scope="col">BankType</th>
+                      <th scope="col">ApiUrl</th>
+                      <th scope="col">CapchaRequired</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of data;" style="cursor: pointer;">
+                      <td scope="row" style="width: 10%;">{{item.id}}</td>
+                      <td scope="row" style="width: 10%;">{{item.userName}}</td>
+                      <td scope="row" style="width: 10%;">{{item.isReady}}</td>
+                      <td scope="row" style="width: 10%;">{{item.updatedDateDisplay}}</td>
+                      <td scope="row" style="width: 10%;">{{item.bankType}}</td>
+                      <td scope="row" style="width: 10%;">{{item.apiUrl}}</td>
+                      <td style="width: 15%;"> 
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Action
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="javascript:void(0)" class="dropdown-item" (click)=item.capchaRequired?Capcha(item.apiUrl):Login(item.apiUrl)>
+                                  <i class="fa fa-edit"></i>
+                                  {{item.capchaRequired ? 'Capcha':'Login'}}
+                                </a>
+                                <a href="javascript:void(0)" class="dropdown-item" ><i class="fa fa-trash"></i> Restart</a>
+                            </div>
+                          </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

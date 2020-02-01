@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h4 class="modal-title">Cập nhật</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="!!form">
+  <form class="theme-form" name="form" [formGroup]="form">
+    <input type="hidden" formControlName="id" [(ngModel)]="dataModel.id" />
+    <div class="form-group row">
+      <label class="col-sm-2 col-form-label">Ghi chú</label>
+      <div class="col-sm-4">
+        <textarea type="text" formControlName="note" [(ngModel)]="dataModel.note" class="form-control"></textarea>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary mr-1" (click)="onSubmit()">Submit</button>
+  <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+</div>

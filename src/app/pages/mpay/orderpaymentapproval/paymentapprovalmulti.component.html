@@ -1,0 +1,89 @@
+<div *blockUI="'blockui'">
+  <div class="modal-header">
+    <h4 class="modal-title">Xử lý đơn hàng</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Cấu hình thanh toán theo lô</h5>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <h6 class="form-label">% thanh toán</h6>
+              <p class="form-label">100%</p>
+            </div>
+            <div class="form-group">
+              <h6 class="form-label">Tổng tiền đơn hàng</h6>
+              <p class="form-label">{{formatFrice(amountVND)}}</p>
+            </div>
+            <div class="form-group">
+              <h6 class="form-label">Tổng tiền còn lại cần thanh toán</h6>
+              <p class="form-label">{{formatFrice(debtVND)}}</p>
+            </div>
+            <div class="form-group">
+              <h6 class="form-label">Tổng tiền muốn thanh toán cho {{paymentPercent}}%</h6>
+              <p class="form-label">{{formatFrice(totalAmountPaymentByPercent)}}</p>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Ghi chú</label>
+              <textarea class="form-control" id="message-text" [(ngModel)]="description"></textarea>
+            </div>
+            <div class="form-footer">
+              <button class="btn btn-primary mr-2" (click)="confirmPaymentOrders()">Xác nhận thanh toán</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Danh sách đơn hàng</h5>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Khách hàng</th>
+                <th>giá SP+VAT</th>
+                <th>Tỷ giá</th>
+                <th>Công mua</th>
+                <th>Đã thanh toán</th>
+                <th>Chờ trừ tiền</th>
+                <th>thanh toán {{paymentPercent}}%</th>
+                <th>TT đơn hàng</th>
+                <th>TT xử lý</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listData">
+                  <td>{{item.code}}</td>
+                  <td>{{item.orderDateDisplay}}</td>
+                  <td>{{item.fullName}}</td>
+                  <td>{{item.total}}¥</td>
+                  <td>{{item.exchangeRate}}</td>
+                  <td>{{item.buyFee}}%</td>
+                  <td>{{formatFrice(item.paid)}}</td>
+                  <td>{{formatFrice(item.totalPayWait)}}</td>
+                  <td style="text-align: right">{{formatFrice(item.totalPayByPercent)}}</td>
+                  <td>{{item.status}}</td>
+                  <td>{{item.state}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+  </div>
+</div>

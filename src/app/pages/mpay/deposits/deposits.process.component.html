@@ -1,0 +1,55 @@
+<div *blockUI="'blockui'">
+  <div class="modal-header">
+    <h4 class="modal-title">Giao dịch nạp tiền</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="card-body">
+        <div class="form-group">
+          <h6 class="form-label">Ghi chú xử lý</h6>
+          <textarea class="form-control" rows="3" [(ngModel)]="desciption" placeholder="Nhập ghi chú xử lý"></textarea>
+        </div>
+        <div class="form-footer">
+          <button class="btn btn-primary mr-2" data-action="APPROVE_L1" (click)="approveLevel1()" *ngIf="isAllowApprovelv1">Duyệt cấp 1</button>
+          <button class="btn btn-primary mr-2" data-action="APPROVE_L2" (click)="approveLevel2()" *ngIf="isAllowApprovelv2">Duyệt cấp 2</button>
+          <button class="btn btn-primary mr-2" data-action="APPROVE_L3" (click)="approveLevel3()" *ngIf="isAllowApprovelv3">Duyệt cấp 3</button>
+          <button class="btn btn-primary mr-2" data-action="REJECT" (click)="reject()" *ngIf="isAllowReject">Từ chối</button>
+          <button class="btn btn-primary mr-2" (click)="cancel()" *ngIf="isAllowCancel">Hủy nạp tiền</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Người tạo</th>
+              <th>Nội dung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of depositsMessages">
+                <td>
+                    <p class="mb-0">{{item.authorDisplay}}</p>
+                    <p class="mb-0">{{item.createdDateDisplay}}</p>
+                  </td>
+                  <td>
+                    <p class="mb-0 wf-action">{{item.action}}</p>
+                    <p class="mb-0">{{item.message}}</p>
+                  </td>
+            </tr>
+            <tr *ngIf="collectionIsEmpty(depositsMessages)">
+                <td colspan="3" class="text-align-center">Không tồn tại bản ghi nào.</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+  </div>
+</div>

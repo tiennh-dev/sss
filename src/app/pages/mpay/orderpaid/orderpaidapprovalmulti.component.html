@@ -1,0 +1,68 @@
+<div class="modal-header">
+    <h4 class="modal-title">Xử lý đơn hàng</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Chuyển xử lý đơn hàng</h5>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <h6 class="form-label">Ghi chú xử lý</h6>
+              <textarea class="form-control" rows="3" [(ngModel)]="orderWorkflowManyRequest.message"
+                placeholder="Nhập ghi chú xử lý"></textarea>
+            </div>
+            <div class="form-footer">
+              <button class="btn btn-primary mr-2" (click)="requestApprove()">Duyệt tạm ứng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Danh sách đơn hàng</h5>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Khách hàng</th>
+                <th>giá SP+VAT</th>
+                <th>Tỷ giá</th>
+                <th>Công mua</th>
+                <th>Đã thanh toán</th>
+                <th>TT đơn hàng</th>
+                <th>TT xử lý</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of listData">
+                  <td>{{item.code}}</td>
+                  <td>{{item.orderDateDisplay}}</td>
+                  <td>{{item.fullName}}</td>
+                  <td>{{item.total}}¥</td>
+                  <td>{{item.exchangeRate}}</td>
+                  <td>{{item.buyFee}}%</td>
+                  <td>{{formatFrice(item.paid)}}</td>
+                  <td>{{item.status}}</td>
+                  <td>{{item.state}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+         
+           
+        </div>
+      </div>
+  
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+  </div>

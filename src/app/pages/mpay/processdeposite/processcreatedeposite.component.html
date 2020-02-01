@@ -1,0 +1,151 @@
+<div *blockUI="'blockui'">
+  <div class="modal-header">
+    <h4 class="modal-title">Giao dịch nạp tiền</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngIf="!showAndHideModel">
+    <div class="modal-body">
+      <div class="modal-body" *ngIf="!!form">
+        <form class="theme-form" name="form" [formGroup]="form">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Mã FT(*)</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="ftCode" placeholder="Mã FT" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.ftCode.errors }" required />
+              <div *ngIf="submitted && f.ftCode.errors" class="invalid-feedback">
+                <div *ngIf="f.ftCode.errors.required">Mã FTcode không được để trống</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Ngày nhận tiền</label>
+            <div class="col-lg-9">
+              <div class="input-group">
+                <input placeholder="Ngày nạp" class="form-control" formControlName="bankDate" ngbDatepicker
+                  #c="ngbDatepicker" />
+                <div class="input-group-append">
+                  <button class="btn calendar" (click)="c.toggle()" type="button"><i
+                      class="fa fa-calendar"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Số tài khoản </label>
+            <div class="col-sm-9">
+              <ng-select [items]="bankInfoList" [virtualScroll]="true" bindLabel="Name" bindValue="accountNumber"
+                class="custom-select2" (change)="chooseAccountNumber($event)" placeholder="Nhập số tài khoản thụ hưởng"
+                formControlName="accountNumber">
+              </ng-select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Số tiền(*)</label>
+            <div class="col-sm-9">
+              <input type="text" formControlName="amount" placeholder="Số tiền" class="form-control" inputmode="numeric"
+                usd-only [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" required />
+              <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
+                <div *ngIf="f.amount.errors.required">Số tiền nạp không được để trống</div>
+                <div *ngIf="f.amount.errors.min">
+                  Số tiền nạp phải lớn hơn 100
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Khách hàng (*)</label>
+            <div class="col-sm-9">
+              <ng-select [items]="customerList" [virtualScroll]="true" bindLabel="fName" bindValue="accountId"
+                (search)="searchAutoCompeleteCustomer($event)" class="custom-select2"
+                placeholder="Nhập họ tên hoặc tài khoản khách hàng cần nạp" formControlName="accountId"
+                [ngClass]="{ 'is-invalid': submitted && f.accountId.errors }" required>
+              </ng-select>
+              <div *ngIf="submitted && f.accountId.errors" class="invalid-feedback">
+                <div *ngIf="f.accountId.errors.required">Vui lòng chọn khách hàng cần nạp tiền</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Ví (*)</label>
+            <div class="col-sm-9">
+              <ng-select [items]="walletList" [virtualScroll]="true" bindLabel="title" bindValue="id"
+                class="custom-select2" placeholder="Chọn loại ví" formControlName="walletId"
+                [ngClass]="{ 'is-invalid': submitted && f.walletId.errors }" required>
+              </ng-select>
+              <div *ngIf="submitted && f.walletId.errors" class="invalid-feedback">
+                <div *ngIf="f.walletId.errors.required">Vui lòng chọn 1 loại ví</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Ghi chú</label>
+            <div class="col-sm-9">
+              <textarea formControlName="note" rows="3" class="form-control"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" *ngIf="!infomationDetails">
+        <button type="button" class="btn btn-primary mr-1" (click)="submit()">Nạp Tiền</button>
+        <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+      </div>
+      <div class="modal-footer" *ngIf="infomationDetails">
+        <button class="btn btn-primary mr-1" (click)="nextDetail()">Next</button>
+        <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showAndHideModel">
+    <div *ngIf="!checkBankingInfo">
+      <div class="modal-body">
+        <div style="padding-left: 20px;">
+          <span style="font-size: 20px;">Thông tin giao dịch nạp tiền</span>
+        </div>
+        <div class="card-body table-responsive" *ngIf="bankInfo">
+          <table class="table table-bordered table-striped">
+            <tr>
+              <td>Khách hàng</td>
+              <td class="orange">{{bankInfo.customerName}}</td>
+            </tr>
+            <tr>
+              <td>Số tiền nạp</td>
+              <td class="orange">{{formatPrice(bankInfo.amountDeposite)}}</td>
+            </tr>
+            <tr>
+              <td>Số tài khoản thụ hưởng</td>
+              <td class="orange">{{bankInfo.accountNumber}}</td>
+            </tr>
+            <tr>
+              <td>Tên chủ tài khoản</td>
+              <td class="orange">{{bankInfo.accountName}}</td>
+            </tr>
+            <tr>
+              <td>Chi nhánh ngân hàng</td>
+              <td class="orange">{{bankInfo.branch}}</td>
+            </tr>
+            <tr>
+              <td>Tỉnh/TP</td>
+              <td class="orange">{{bankInfo.province}}</td>
+            </tr>
+            <tr>
+              <td>Nội dung chuyển khoản</td>
+              <td class="orange">{{bankInfo.description}} {{bankInfo.customerName}} {{bankInfo.customerPhoneNumber}}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="messengerdeposite" *ngIf="disabledDeposite"
+        style="background-color: limegreen;width: 530px;margin-left: 20px; margin-bottom: 5px;">
+        <span style="font-size: 15px;font-family: none;padding-left: 5px;color: antiquewhite;">Nạp tiền thành công!</span>
+      </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary mr-1" (click)="createDeposite()"
+            *ngIf="!disabledDeposite">Nạp tiền</button>
+          <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

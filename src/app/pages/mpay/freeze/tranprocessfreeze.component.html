@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h4 class="modal-title">Giao dịch tạm dữ</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="card-body">
+      <div class="form-group">
+        <h6 class="form-label">Ghi chú xử lý</h6>
+        <textarea class="form-control" rows="3" placeholder="Nhập ghi chú xử lý"></textarea>
+      </div>
+      <div class="form-footer">
+        <button class="btn btn-primary mr-2">Duyệt cấp 1</button>
+        <button class="btn btn-primary mr-2">Duyệt cấp 2</button>
+        <button class="btn btn-primary mr-2">Duyệt cấp 3</button>
+        <button class="btn btn-primary mr-2">Trở lại</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="w120">Người tạo</th>
+            <th>Nội dung</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+</div>

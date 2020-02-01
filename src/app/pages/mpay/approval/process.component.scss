@@ -1,0 +1,57 @@
+.product-img {
+  max-width: 80px;
+}
+.paymentinfo-title{
+  background: #f8a136;
+  padding: 8px 10px;
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  color: #fff;
+}
+.paymentinfo-body{
+  p{
+    padding: 2px 0;
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+.shipinfo-title{
+  background: #f8a136;
+  padding: 8px 10px;
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  color: #fff;
+}
+.shipinfo-txt{
+  background: #f9f9f9;
+  border: solid 1px #999;
+  padding: 15px 30px 15px 15px;
+  position: relative;
+  margin-bottom: 15px;
+  position: relative;
+  font-size: 14px;
+  color: #fff;
+}
+.address-active{
+  border-color: #f8a136;
+    background-color: #fbb053;
+    color: #fff;
+}
+.shipinfo-body{
+  padding-top: 10px;
+  margin: 1px 1px;
+  p{
+    padding: 2px 0;
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+.btn-info-cus{
+  color: #111;
+  text-transform: uppercase; 
+   font-weight: 600;
+}

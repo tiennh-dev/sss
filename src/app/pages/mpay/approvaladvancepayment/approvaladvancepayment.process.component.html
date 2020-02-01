@@ -1,0 +1,250 @@
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="'Help'"></ng-keyboard-shortcuts-help>
+<div class="modal-header">
+  <h4 class="modal-title">Xử lý đơn hàng</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('x')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Chuyển xử lý đơn hàng</h5>
+        </div>
+
+        <div class="card-body" *ngIf="isWaitForProcessCancelOrder">
+          <div class="form-group">
+            <h6 class="form-label">Ghi chú xử lý</h6>
+            <textarea class="form-control" rows="3" [(ngModel)]="orderWorkflowRequest.message"
+              placeholder="Nhập ghi chú xử lý"></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="button" class="btn btn-primary mr-1" (click)="approvedCancelOrder()">Duyệt huỷ đơn</button>
+            <button type="button" class="btn btn-primary mr-1" (click)="rejectCancelOrder()">Từ chối duyệt huỷ
+              đơn</button>
+          </div>
+        </div>
+
+        <div class="card-body" *ngIf="isWaitForProcessTempDeposit">
+          <div class="form-group">
+            <h6 class="form-label">Ghi chú xử lý</h6>
+            <textarea class="form-control" rows="3" [(ngModel)]="orderWorkflowRequest.message"
+              placeholder="Nhập ghi chú xử lý"></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="button" class="btn btn-primary mr-1" data-action="DUYET_TAMUNG" (click)="approveTempDeposit()">Duyệt tạm ứng</button>
+            <button type="button" class="btn btn-primary mr-1" (click)="rejectRequestApproveTempDeposit()">Từ chối duyệt
+              tạm ứng</button>
+          </div>
+        </div>
+
+        <!-- <div class="card-body" *ngIf="isWaitForProcessRequestPaymentOrder">
+          <div class="form-group">
+            <h6 class="form-label">Ghi chú xử lý</h6>
+            <textarea class="form-control" rows="3" [(ngModel)]="orderWorkflowRequest.message"
+              placeholder="Nhập ghi chú xử lý"></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="button" class="btn btn-primary mr-1" (click)="approvePaymentOrder()">Duyệt Đề nghị thanh
+              toán</button>
+            <button type="button" class="btn btn-primary mr-1" (click)="rejectPaymentOrder()">Từ chối duyệt Đề nghị
+              thanh toán</button>
+          </div>
+        </div> -->
+
+        <div class="card-body" *ngIf="isWaitForPaymentOrderDone">
+          <div class="form-group">
+            <h6 class="form-label">Ghi chú xử lý</h6>
+            <textarea class="form-control" rows="3" [(ngModel)]="orderWorkflowRequest.message"
+              placeholder="Nhập ghi chú xử lý"></textarea>
+          </div>
+          <div class="form-footer">
+            <button type="button" class="btn btn-primary mr-1" data-action="DUYET_THANHTOAN" (click)="approvePaymentOrderDone()">Duyệt thanh toán toàn
+              bộ đơn hàng</button>
+            <button type="button" class="btn btn-primary mr-1" (click)="customerRejectPayment()">Khách hàng từ chối
+              thanh toán</button>
+          </div>
+        </div>
+
+
+
+
+
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="w160">Người tạo</th>
+                <th>Nội dung</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of orderMessages">
+                <td>
+                  <p class="mb-0">{{item.authorDisplay}}</p>
+                  <p class="mb-0">{{item.createdDateDisplay}}</p>
+                </td>
+                <td>
+                  <p class="mb-0 wf-action">{{item.action}}</p>
+                  <p class="mb-0">{{item.message}}</p>
+                </td>
+              </tr>
+              <tr *ngIf="collectionIsEmpty(orderMessages)">
+                <td colspan="3" class="text-align-center">Không tồn tại bản ghi nào.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Thông tin đơn hàng</h5>
+        </div>
+        <div class="card-body table-responsive" *ngIf="order">
+          <table class="table table-bordered table-striped">
+            <tr>
+              <td class="w140">Mã đơn hàng</td>
+              <td class="w350">{{order.code}}</td>
+              <td class="w140">Ngày đặt</td>
+              <td>{{order.orderDateDisplay}}</td>
+            </tr>
+            <tr>
+              <td>Mô tả</td>
+              <td colspan="3">{{order.title}}</td>
+            </tr>
+            <tr>
+              <td>Khách hàng</td>
+              <td colspan="3">{{order.fullName}} [{{order.accountName}}]</td>
+            </tr>
+            <tr>
+              <td>Mã Tracking</td>
+              <td>{{order.tracking!=null?order.tracking:'chưa cập nhật' }}</td>
+              <td>Kho</td>
+              <td>{{order.warehouse}}</td>
+            </tr>
+            <tr>
+              <td>Giá SP + VAT</td>
+              <td class="orange">{{priceDisplay(order.total) }} ¥ ~ {{priceDisplay(order.total*order.exchangeRate) }} đ
+              </td>
+              <td>Phí v/c tại Nhật</td>
+              <td class="orange">{{order.shippingFee!=null?(priceDisplay(order.shippingFee) + '¥'):'chưa cập nhật' }}
+              </td>
+            </tr>
+            <tr>
+              <td>Phụ phí</td>
+              <td class="orange">{{order.surcharge!=null?(priceDisplay(order.surcharge) + '¥'):'' }} ~
+                {{order.surcharge!=null?(priceDisplay(order.surcharge*order.exchangeRate) + 'đ'):'' }} </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Công mua</td>
+              <td class="orange">{{priceDisplay(order.buyFee) }} % ~ {{buyfreejp(order)}} ¥ ~
+                {{priceDisplay(buyfreejp(order)* order.exchangeRate)}}đ</td>
+              <td>Tỷ giá</td>
+              <td class="orange">{{priceDisplay(order.exchangeRate) }} đ</td>
+            </tr>
+            <tr>
+              <td>Trọng lượng</td>
+              <td>{{order.weight}} (gam)</td>
+              <td>Kích thước</td>
+              <td>{{order.width}} - {{order.hight}} - {{order.length}} (cm)</td>
+            </tr>
+            <tr>
+              <td>V/C Nhật-Việt</td>
+              <td class="orange">{{priceDisplay(order.shippingUnitGlobal)}} đ/kg ~ {{priceDisplay(shipGlobal(order))}} đ
+              </td>
+              <td>Phí giao hàng</td>
+              <td class="orange">{{order.deliveryPartner!=null?order.deliveryPartner:'' }} -
+                {{order.deliveryFee!=null?(priceDisplay(order.deliveryFee) + 'đ'):'' }}</td>
+            </tr>
+            <tr>
+              <td>Tổng tiền</td>
+              <td class="orange"><strong>{{totalPriceVN(order)}} đ</strong></td>
+              <td>TT đơn hàng</td>
+              <td>
+                <span class="badge badge-light">{{ statusDisplay(order.status) }}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="card-body table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="">Tên SP</th>
+                <th class="mw90">Mã SP</th>
+                <th class="mw130">Kết thúc</th>
+                <th class="mw100">Giá</th>
+                <th class="mw70">Thuế</th>
+                <th class="mw90">Số lượng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of orderDetails">
+                <td style="width: 45px;"><a target="_blank"
+                    href="{{item.productLink}}"><img class="img-list img-fluid"
+                      src="{{item.previewImage}}"></a>
+                </td>
+                <td> <a href="{{item.productLink}}"
+                    target="_blank">{{item.productName}}</a></td>
+                <td>{{item.ref}}</td>
+                <td class="">{{item.orderDateStr}}</td>
+                <td class="">{{item.price}} ¥</td>
+                <td class="">{{item.tax}} %</td>
+                <td class="">{{item.amount}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="card-body">
+          <div class="mb-2">
+            <button class="btn btn-primary mr-2" data-action="ADD_PAY_ORDER" (click)="addPaymentOpenModel()">Tạo thanh toán</button>
+            <button class="btn btn-primary mr-2" (click)="refreshPayment()"><i class="fa fa-refresh"></i></button>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Tên ví</th>
+                <th>Số tiền</th>
+                <th>Loại TT</th>
+                <th>Hình thức TT</th>
+                <th>Trạng thái TT</th>
+                <th>Trạng thái XL</th>
+                <th>Mô tả</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let itempay of payments">
+                <td>{{itempay.walletId}}</td>
+                <td>{{itempay.amountstring}} đ</td>
+                <td>{{paymentTypeDisp(itempay.paymentType)}}</td>
+                <td>{{paymentFormDisp(itempay.paymentForm)}}</td>
+                <td>
+                  <span>{{itempay.status}}</span>
+                </td>
+                <td>
+                  <span>{{itempay.state}}</span>
+                </td>
+                <td>{{itempay.description}}</td>
+              </tr>
+              <tr *ngIf="collectionIsEmpty(payments)">
+                <td colspan="5" class="text-align-center">Không tồn tại bản ghi nào.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" (click)="activeModal.dismiss('x')">Close</button>
+</div>

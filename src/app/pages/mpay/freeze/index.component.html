@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-lg-12">
+              <h5>Giao dịch tạm giữ</h5>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-lg-3">
+              <ng-select [items]="customerList" [virtualScroll]="true" (change)="rerender()" bindLabel="fName"
+                bindValue="accountId" (search)="searchAutoCompeleteCustomer($event)" [(ngModel)]="accountId" placeholder="Lọc theo khách hàng...">
+              </ng-select>
+            </div>
+            <div class="col-lg-3">
+              <input type="text" class="form-control" (keydown.enter)="rerender()" (change)="rerender()"
+                [(ngModel)]="type" placeholder="Lọc theo thể loại..." />
+            </div>
+            <div class="col-lg-3">
+              <input type="text" class="form-control" (keydown.enter)="rerender()" (change)="rerender()"
+                [(ngModel)]="ref" placeholder="Lọc theo tham chiếu..." />
+            </div>
+            <div class="col-lg-3">
+              <input type="text" class="form-control" (keydown.enter)="rerender()" (change)="rerender()"
+                [(ngModel)]="description" placeholder="Lọc theo mô tả..." />
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table  table-hover"> </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
